@@ -1,0 +1,29 @@
+name        : ffmpegthumbnailer
+version     : 2.3.0
+release     : 1
+homepage    : https://github.com/dirkvdb/ffmpegthumbnailer
+license     : GPL-2.0-or-later
+summary     : Lightweight video thumbnailer for generating thumbnails from video files
+description : |
+    FFmpegthumbnailer is a lightweight thumbnailer that can be used by file
+    managers to create thumbnails for video files. It uses FFmpeg to decode
+    frames and can output PNG or JPEG thumbnails.
+upstreams   :
+    - git|https://github.com/dirkvdb/ffmpegthumbnailer : cfaf0c5018aec14e5ecbb687d40b090c2a6a14bd
+builddeps   :
+    - binary(cmake)
+    - binary(ninja)
+    - binary(pkgconf)
+    - pkgconfig(libjpeg)
+    - ffmpeg-devel
+setup       : |
+    # Keep it lean: no static build, and do not enable optional audio thumbnailer unless you
+    # explicitly want to pull in additional deps.
+    %cmake -G Ninja \
+        -DENABLE_STATIC=OFF \
+        -DENABLE_AUDIO_THUMBNAILER=OFF \
+        -DCMAKE_INSTALL_PREFIX=/usr
+build       : |
+    %cmake_build
+install     : |
+    %cmake_install
